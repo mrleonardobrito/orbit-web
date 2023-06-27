@@ -1,0 +1,47 @@
+@media screen and (min-height: 660px) {
+    body {
+        overflow: hidden;
+    }
+
+    .left-bar{
+        align-self: stretch;
+    }   
+
+    .content{
+        flex: 1;
+    }
+
+    .day-period{
+        min-height: 25%;
+    }
+
+    .scrum-boards, .scrum-board-content{
+        align-self: stretch;
+    }
+
+    .left-bar-content{
+        flex-grow: 1;
+    }
+}
+
+@media screen and (max-height: 480px) {
+    .font-subtitle {
+        font-size: small;
+    }
+
+    .font-base {
+        font-size: smaller;
+    }
+
+    html {
+        font-size: small;
+    }
+
+    .header {
+        display: none;
+    }
+
+    .column {
+        min-width: 180px;
+    }
+}

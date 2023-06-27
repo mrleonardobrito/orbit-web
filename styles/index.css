@@ -1,0 +1,200 @@
+
+.font-base{
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -1%;
+    color: var(--color-white);
+}
+
+.font-subtitle{
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -1.2%;  
+    color: var(--color-white);
+}
+
+.font-title{
+    font-family: Inter;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -1%;  
+    color: var(--color-white);
+}
+
+.header {
+    display: flex;
+    padding: 1rem 2rem;
+    align-items: center;
+    background: var(--primary);
+}
+
+.header-content {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.date-hour {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.user{
+    gap: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.avatar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-image{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.5rem;
+}
+
+.content {
+    display: flex;
+    flex: 1 0 content;
+    overflow: auto;
+    align-items: flex-start;
+}
+
+.left-bar{
+    flex: 0 1 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0.5rem 2rem 0.5rem;
+}
+
+.left-bar-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    align-self: stretch;
+}
+
+.day-period{
+    gap: 0.5rem;
+    display: flex;
+    height: var(--day-period-height);
+    width: 4rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 0.8rem;
+    background: var(--primary);
+}
+
+.day-period-label {
+    text-align: center;
+    color: var(--color-white);
+    transform: rotate(-90deg);
+}
+
+/* .morning {
+    height: 104px;
+}
+
+.afternoon {
+    height: 104px;
+}
+
+.night {
+    height: 104px;
+} */
+
+.scrum-boards {
+    gap: 1rem;
+    display: flex;
+    padding: 1rem 0.5rem;
+    align-items: flex-start;
+    flex: 1 0 0;
+}
+
+.scrum-board-content {
+    gap: 0.5rem;
+    display: flex;
+    flex: 1 0 0;
+    align-items: flex-start;
+}
+
+.column { 
+    flex: 1 0 0;
+    min-width: 300px;
+    display: flex;
+    border-radius: 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--secondary-20);
+}
+
+.column-header{
+    display: flex;
+    height: 1rem;
+    padding: 0.5rem 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.8rem 0.8rem 0 0;
+    align-self: stretch;
+    background: var(--primary);
+}
+
+.column-items{
+    gap: 1rem;
+    flex: 1 0 0;
+    display: flex;
+    padding: 1rem 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.task {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 0.8rem;
+    height: var(--task-height);
+    background: var(--secondary-100);
+}
+
+.task-color{
+    width: 0.8rem;
+    align-self: stretch;
+    background-color: var(--task-base-color);
+    border-radius: 0.8rem 0 0 0.8rem;
+}
+
+.task-info {
+    display: flex;
+    padding: 0.8rem 0.8rem 0.8rem 0.2rem;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.task-name{
+    align-self: stretch;
+}
+
+.task-hour {
+    align-self: flex-end;
+    background-color: black;
+}
