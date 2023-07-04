@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/index.css" />
+    <link rel="stylesheet" href="/styles/responsive.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="content">
+      <section class="header">
+        <div class="header-content">
+          <div class="date-hour">
+            <div class="font-title hour">10:58</div>
+            <div class="font-base date">23 Março 2022</div>
+          </div>
+          <div class="user">
+            <div class="font-base name">Leonardo Brito</div>
+            <div class="avatar">
+              <img class="profile-image" alt="" src="./Pica-pau.jpeg" />
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="main">
+        <div class="left-bar">
+          <div class="left-bar-content">
+            <div id="morning" class="day-period">
+              <div class="font-subtitle day-period-label">Morning</div>
+            </div>
+            <div id="afternoon" class="day-period">
+              <div class="font-subtitle day-period-label">Afternoon</div>
+            </div>
+            <div id="night" class="day-period">
+              <div class="font-subtitle day-period-label">Night</div>
+            </div>
+          </div>
+        </div>
+        <div class="scrum-boards">
+          <div class="scrum-board-content">
+            <div id="todoColumn" class="column">
+              <div class="column-header">
+                <div class="font-subtitle column-title" id="todo-title">Todo</div>
+              </div>
+              <div class="column-items" id="todo-items">
+              </div>
+            </div>
+            <div id="doingColumn" class="column">
+              <div class="column-header">
+                <div class="font-subtitle column-title" id="doing-title">Doing</div>
+              </div>
+              <div class="column-items" id="doing-items">
+        
+              </div>
+            </div>
+            <div id="doneColumn" class="column">
+              <div class="column-header">
+                <div class="font-subtitle column-title" id="done-title">Done</div>
+              </div>
+              <div class="column-items" id="done-items">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <div class="task-modal" id="add-task-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="font-title new-task-label">Adicionar Tarefa</p>
+        </div>
+        <form class="modal-main">
+          <div class="name-group">
+            <input id="taskNameInput" type="text" class="font-subtitle task-name" placeholder="Nome da Tarefa" required>
+          </div>
+          <div class="hour-input-container">
+            <div class="input-group">
+              <label for="initialHourInput" class="font-subtitle hour-label">Hora de início:</label>
+              <input id="initialHourInput" type="time" class="font-subtitle initial-hour hour-input" name="appt-time" value="00:00" min="00:00" max="23:59" required/>
+            </div>
+            <div class="input-group">
+              <label for="finalHourInput" class="font-subtitle hour-label">Hora de término:</label>
+              <input id="finalHourInput" type="time" class="font-subtitle final-hour hour-input" name="appt-time" value="00:00" min="00:00" max="23:59" required/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="task-modal" id="edit-task-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="font-title new-task-label">Editar Tarefa</p>
+        </div>
+        <form class="modal-main">
+          <div class="name-group">
+            <input id="taskNameInput" type="text" class="font-subtitle task-name" placeholder="Nome da Tarefa" required>
+          </div>
+          <div class="hour-input-container">
+            <div class="input-group">
+              <label for="initialHourInput" class="font-subtitle hour-label">Hora de início:</label>
+              <input id="initialHourInput" type="time" class="font-subtitle initial-hour hour-input" name="appt-time" value="00:00" min="00:00" max="23:59" required/>
+            </div>
+            <div class="input-group">
+              <label for="finalHourInput" class="font-subtitle hour-label">Hora de término:</label>
+              <input id="finalHourInput" type="time" class="font-subtitle final-hour hour-input" name="appt-time" value="00:00" min="00:00" max="23:59" required/>
+            </div>
+
+            <div class="task-buttons">
+              <button id="editTaskButton" class="font-subtitle edit-task-button">Editar</button>
+              <button id="deleteTaskButton" class="font-subtitle delete-task-button">Excluir</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
