@@ -13,7 +13,7 @@ export const taskModel = {
     return this.tasks;
   },
 
-/*   editTask(taskID, newTask) {
+  editTask(taskID, newTask) {
     const taskIndex = this.tasks.findIndex((task) => task.getID() === taskID);
     this.tasks[taskIndex] = newTask;
     this.tasks.sort((a, b) => a.initialHour - b.initialHour);
@@ -25,7 +25,14 @@ export const taskModel = {
     this.tasks.splice(taskIndex, 1);
     this.notifyObservers();
   },
- */
+
+  moveTask(taskID, status) {
+    const taskIndex = this.tasks.findIndex((task) => task.getID() === taskID);
+    this.tasks[taskIndex].setStatus(status);
+    this.tasks.sort((a, b) => a.initialHour - b.initialHour);
+    this.notifyObservers();
+  },
+ 
   addObserver(observer) {
     this.observers.push(observer);
   },

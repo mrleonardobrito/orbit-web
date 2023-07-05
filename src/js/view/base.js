@@ -1,5 +1,19 @@
 export const elements = { 
-    todo: { header: document.getElementById('todo-header'), items: document.getElementById('todo-items') },
-    doing: { header: document.getElementById('doing-header'), items: document.getElementById('doing-items') },
-    done: { header: document.getElementById('done-header'), items: document.getElementById('done-items') },
+    columns: [
+        { header: document.getElementById('todo-title'), items: document.getElementById('todo-items') },
+        { header: document.getElementById('doing-title'), items: document.getElementById('doing-items') },
+        { header: document.getElementById('done-title'), items: document.getElementById('done-items') },    
+    ],
+    forms: {
+        addTask: document.forms['addTaskForm'],
+        editTask: document.forms['editTaskForm'],
+    }, 
+    modals: {
+        addTask: document.getElementById('add-task-modal'),
+        editTask: document.getElementById('edit-task-modal'),
+    },
+    header: {
+        date: document.getElementById('date'),
+        hour: document.getElementById('hour'),
+    }
 };

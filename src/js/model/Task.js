@@ -27,6 +27,10 @@ class Task {
   getStatus() {
     return this.status;
   }
+
+  setStatus(status) {
+    this.status = status;
+  }
 }
 
 export default Task;

@@ -1,38 +1,69 @@
 import { elements } from "./base";
+import { dateHelper } from "../utils/date_helper";
 
 export const taskView = {
     renderTasks(tasks) {
-      elements.todo.items.innerHTML = '';
-      elements.doing.items.innerHTML = '';
-      elements.done.items.innerHTML = '';
+      const [todo, doing, done] = elements.columns
 
+      todo.items.innerHTML = '';
+      doing.items.innerHTML = '';
+      done.items.innerHTML = '';
+      
       tasks.forEach(task => {
-        const taskElement = document.createElement('div');
-        taskElement.classList.add('task');
+        const taskElement = this.createTaskElement(task);
+        const column = this.getColumn(task);
 
-        const markup = `
-            <div class="task-color"></div>
-            <span class="task-id" hidden>${task.getID()}</span>
-            <div class="task-info">
-              <p class="font-subtitle task-name">${task.getName()}</p>
-              <p class="font-base task-hour">${task.getDueInterval()}</p>
-            </div>
-        `;
-        taskElement.insertAdjacentHTML('beforeend', markup);
-  
-        if (task.getStatus() == 'Done') {
-          elements.done.items.insertAdjacentElement('beforeend', taskElement);
-        } else if (task.getStatus() == 'Doing') {
-          elements.doing.items.insertAdjacentElement('beforeend', taskElement);
-        } else {
-          elements.todo.items.insertAdjacentElement('beforeend', taskElement);
-        }
+        column.appendChild(taskElement);
       });
     },
 
-    /* setupWindowListener() {
-      const addTaskModal = document.getElementById('add-task-modal');
-      const editTaskModal = document.getElementById('edit-task-modal');
+    createTaskElement(task) {   
+      const taskElement = document.createElement('div');
+      taskElement.classList.add('task');
+      taskElement.setAttribute('draggable', 'true');
+
+      const markup = `
+          <div class="task-color"></div>
+          <span class="task-id" hidden>${task.getID()}</span>
+          <div class="task-info">
+            <p class="font-subtitle task-name">${task.getName()}</p>
+            <p class="font-base task-hour">${task.getDueInterval()}</p>
+          </div>
+      `;
+      taskElement.insertAdjacentHTML('beforeend', markup);
+
+      taskElement.addEventListener('click', (event) => {
+        elements.modals.editTask.style.display = 'flex';
+        taskElement.dispatchEvent(new CustomEvent('editTask', { detail: task, bubbles: true }));
+      }); 
+
+      taskElement.addEventListener('dragstart', (event) => {
+        taskElement.classList.add('dragging');
+        event.dataTransfer.setData('text/plain', taskElement.querySelector('.task-id').textContent);
+      });
+
+      taskElement.addEventListener('dragend', (event) => {
+        taskElement.classList.remove('dragging'); 
+      });
+
+      return taskElement;      
+    },
+
+    getColumn(task) {
+      const [todo, doing, done] = elements.columns
+
+      if (task.getStatus() == 'Done') {
+        return done.items;
+      } else if (task.getStatus() == 'Doing') {
+        return doing.items;
+      } else {
+        return todo.items;
+      }
+    },
+
+    setupWindowListener() {
+      const addTaskModal = elements.modals.addTask;
+      const editTaskModal = elements.modals.editTask;
 
       window.addEventListener('click', (event) => { 
         if (event.target == addTaskModal) {
@@ -42,72 +73,106 @@ export const taskView = {
           editTaskModal.style.display = 'none';
         }
       });
-    }, */
+    },
 
-    /* setupAddTaskListener(handler) {
-      const columns = document.querySelectorAll('.column');
-      const addTaskModal = document.getElementById('add-task-modal');
+    setupAddTaskListener(handler) {
       let handledColumn = undefined;
+      const addTask = elements.forms.addTask;
   
-      columns.forEach(column => {
-        column.querySelector('.column-items').addEventListener('dblclick', () => {
-          addTaskModal.style.display = 'flex';
+      elements.columns.forEach(column => {
+        column.items.addEventListener('dblclick', () => {
+          elements.modals.addTask.style.display = 'flex';
           handledColumn = column;
         });
       });
       
-      addTaskModal.addEventListener('addTask', (event) => {
-        const taskName = addTaskModal.querySelector('#taskNameInput').value;
-        const initialHour = addTaskModal.querySelector('#initialHourInput').value;
-        const finalHour = addTaskModal.querySelector('#finalHourInput').value;
-        const status = handledColumn.querySelector('.column-title').textContent;
+      addTask.addEventListener('submit', (event) => {
+        event.preventDefault();
+        elements.modals.addTask.style.display = 'none';
+          
+        const taskName = addTask.querySelector('#taskNameInput').value;
+        const initialHour = addTask.querySelector('#initialHourInput').value;
+        const finalHour = addTask.querySelector('#finalHourInput').value;
+        const status = handledColumn.header.textContent;
 
         const taskDTO = {
           taskName: taskName ? taskName : 'Tarefa sem nome',
-          initialHour: dateHelper.getHourFromStr(initialHour),
-          finalHour: dateHelper.getHourFromStr(finalHour),
+          initialHour: dateHelper.getHourFromStr(initialHour ? initialHour : '00:00') ,
+          finalHour: dateHelper.getHourFromStr(finalHour ? finalHour : '00:00'),
           status: status
         };
 
         handler(taskDTO.taskName, taskDTO.initialHour, taskDTO.finalHour, taskDTO.status);
+        
+        this.clearForm(addTask);
       });
-    }, */
+    },
 
-    /* setupEditTaskListener(handler) {
-      const editTaskModal = document.getElementById('edit-task-modal');
-      const editTaskButton = document.getElementById('editTaskButton');
+    clearForm(form) {
+      form.querySelector('#taskNameInput').value = '';
+      form.querySelector('#initialHourInput').value = '00:00';
+      form.querySelector('#finalHourInput').value = '00:00';  
+    },
 
-      editTaskButton.onclick = (event) => {
+   setupEditTaskListener(editTask, deleteTask) {
+      const editTaskModal = elements.modals.editTask;
+      const editTaskForm = elements.forms.editTask;
+      let handledTask = undefined;
+
+      document.addEventListener('editTask', (event) => {
+        handledTask = event.detail
+        console.log(event.detail);
+      }); 
+      
+      editTaskForm.onsubmit = (event) => {
+        event.preventDefault();
+      };
+
+      editTaskForm["editTaskButton"].addEventListener('click', (event) => {
         event.preventDefault();
         editTaskModal.style.display = 'none';
 
         const taskName = editTaskModal.querySelector('#taskNameInput').value;
         const initialHour = editTaskModal.querySelector('#initialHourInput').value;
         const finalHour = editTaskModal.querySelector('#finalHourInput').value;
-        const status = handledTask.querySelector('.column-title').textContent;
+        const status = handledTask.getStatus();
 
         const taskDTO = {
-          taskID: handledTask.querySelector('.task-id').textContent,
+          taskID: handledTask.getID(),
           taskName: taskName ? taskName : 'Tarefa sem nome',
           initialHour: dateHelper.getHourFromStr(initialHour),
           finalHour: dateHelper.getHourFromStr(finalHour),
-          status: status
+          status: status ? status : 'Todo'
         };
 
-        handler(taskDTO.taskID, taskDTO.taskName, taskDTO.initialHour, taskDTO.finalHour, taskDTO.status);
-      }
-    }, */
+        editTask(taskDTO.taskID, taskDTO.taskName, taskDTO.initialHour, taskDTO.finalHour, taskDTO.status);
+      });
 
-    /* setupDeleteTaskListener(handler) {
-      const deleteTaskButton = document.getElementById('deleteTaskButton');
-      let handledTask = undefined;
-    
-      deleteTaskButton.addEventListener('click', (event) => {
+      editTaskForm["deleteTaskButton"].addEventListener('click', (event) => {
         event.preventDefault();
-        const taskID = handledTask.querySelector('.task-id').textContent;
+        editTaskModal.style.display = 'none';
 
-        handler(taskID);
-      });        
-    } */
+        deleteTask(handledTask.getID());
+      });
+    },
+
+    setupMoveTaskListener(moveTask) {
+      const columns = elements.columns;
+
+      columns.forEach(column => {
+        column.items.addEventListener('dragover', (event) => {
+          event.preventDefault();
+        });
+      });
+
+      columns.forEach(column => {
+        column.items.addEventListener('drop', (event) => {
+          event.preventDefault();
+          const taskID = event.dataTransfer.getData('text/plain');
+          const status = column.header.textContent;
+          moveTask(taskID, status);
+        });
+      });
+    }
 };
   
