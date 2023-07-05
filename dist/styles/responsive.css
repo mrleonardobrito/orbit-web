@@ -38,7 +38,7 @@
     }
 
     .header {
-        display: none;
+        max-height: 2.5rem;
     }
 
     .column {

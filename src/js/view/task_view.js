@@ -11,6 +11,7 @@ export const taskView = {
       
       tasks.forEach(task => {
         const taskElement = this.createTaskElement(task);
+        taskElement.setAttribute('draggable', 'true');  
         const column = this.getColumn(task);
 
         column.appendChild(taskElement);
@@ -20,11 +21,10 @@ export const taskView = {
     createTaskElement(task) {   
       const taskElement = document.createElement('div');
       taskElement.classList.add('task');
-      taskElement.setAttribute('draggable', 'true');
 
       const markup = `
           <div class="task-color"></div>
-          <span class="task-id" hidden>${task.getID()}</span>
+          <span class="task-id" id="taskID" hidden>${task.getID()}</span>
           <div class="task-info">
             <p class="font-subtitle task-name">${task.getName()}</p>
             <p class="font-base task-hour">${task.getDueInterval()}</p>
@@ -32,19 +32,10 @@ export const taskView = {
       `;
       taskElement.insertAdjacentHTML('beforeend', markup);
 
-      taskElement.addEventListener('click', (event) => {
+      taskElement.addEventListener('dblclick', (event) => {
         elements.modals.editTask.style.display = 'flex';
         taskElement.dispatchEvent(new CustomEvent('editTask', { detail: task, bubbles: true }));
       }); 
-
-      taskElement.addEventListener('dragstart', (event) => {
-        taskElement.classList.add('dragging');
-        event.dataTransfer.setData('text/plain', taskElement.querySelector('.task-id').textContent);
-      });
-
-      taskElement.addEventListener('dragend', (event) => {
-        taskElement.classList.remove('dragging'); 
-      });
 
       return taskElement;      
     },
@@ -72,6 +63,10 @@ export const taskView = {
         if (event.target == editTaskModal) {
           editTaskModal.style.display = 'none';
         }
+      });
+
+      document.addEventListener('dragstart', (event) => {
+        event.target.closest('.task').classList.add('dragging');
       });
     },
 
@@ -156,21 +151,46 @@ export const taskView = {
       });
     },
 
+    getNewPosition(column, clientY) {
+      const tasks = column.querySelectorAll('.task:not(.dragging)');
+      let result;
+
+      for (let referTask of tasks) {
+        const box = referTask.getBoundingClientRect();
+        const boxCenterY = box.y + box.height / 2;
+
+        if (clientY >= boxCenterY) {
+          result = referTask;
+        }
+      }
+
+      return result;
+    },
+
     setupMoveTaskListener(moveTask) {
       const columns = elements.columns;
 
       columns.forEach(column => {
         column.items.addEventListener('dragover', (event) => {
           event.preventDefault();
-        });
-      });
 
-      columns.forEach(column => {
-        column.items.addEventListener('drop', (event) => {
+          const dragging = document.querySelector('.dragging');
+          const applyAfter = this.getNewPosition(column.items, event.clientY);
+
+          if (applyAfter) {
+            applyAfter.insertAdjacentElement('afterend', dragging);
+          } else {
+            column.items.prepend(dragging);
+          }
+        });
+
+        column.items.addEventListener('dragend', (event) => {
           event.preventDefault();
-          const taskID = event.dataTransfer.getData('text/plain');
+          const dragging = document.querySelector('.dragging');
           const status = column.header.textContent;
-          moveTask(taskID, status);
+
+          moveTask(dragging.querySelector('.task-id').textContent, status);
+          dragging.classList.remove('dragging');
         });
       });
     }

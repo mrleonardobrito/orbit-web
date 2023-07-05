@@ -26,6 +26,7 @@ export const taskController = {
   },
 
   moveTask(taskID, status) {
+    console.log(taskID, status);
     taskModel.moveTask(taskID, status);
   },
 
